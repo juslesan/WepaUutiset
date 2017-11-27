@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+    </head>
+    <body>
+
+        <h2>Uutiset! </h2>
+
+        <div>
+            <ul>
+                <li th:each="uutinen : ${uutiset}"> <a th:href="@{/uutinen/{uutinenId}(uutinenId=${uutinen.id})}" th:text="${uutinen.nimi + ', ' + uutinen.uutinenDate}"></a></li>
+            </ul>
+        </div>
+
+
+
+
+    </body>
+
+</html>

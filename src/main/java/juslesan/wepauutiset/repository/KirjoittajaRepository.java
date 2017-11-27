@@ -5,9 +5,9 @@
  */
 package juslesan.wepauutiset.repository;
 
-import juslesan.wepauutiset.domain.Uutinen;
+import juslesan.wepauutiset.domain.Kirjoittaja;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UutinenRepository extends JpaRepository<Uutinen, Long> {
+public interface KirjoittajaRepository extends JpaRepository<Kirjoittaja, Long> {
 
 }

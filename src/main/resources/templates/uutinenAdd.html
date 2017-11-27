@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"/>
+
+        <title>Lisää uutinen</title>
+    </head>
+    <body>
+        <h2>Lisää uutinen</h2>
+
+        <form method="POST" th:action="@{/uutinen/add}">
+            <p>Nimi: <input type="text" name="nimi"/></p>
+            <p>Ingressi: <input type="text" name="ingressi"/></p>
+            <p>Artikkeli: <textarea name="teksti" cols="40" rows="5"></textarea></p>
+            <p>Lisää kuva: <input type="file" name="file" id="file"/></p>
+            
+            <input type="submit" value="Add"/>
+        </form> 
+    </body>
+</html>
