@@ -8,6 +8,8 @@ package juslesan.wepauutiset.domain;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -33,10 +35,22 @@ public class Uutinen extends AbstractPersistable<Long> {
     private LocalDateTime uutinenDate;
     @ManyToMany
     private List<Kirjoittaja> kirjoittajat;
-    @ManyToMany
+    @ManyToMany(mappedBy = "uutiset", fetch = FetchType.EAGER)
     private List<Kategoria> kategoriat;
 
     public void luettuAdd() {
         luettu++;
+    }
+
+    public void addKategoria(Kategoria kategoria) {
+        if (kategoria != null) {
+            kategoriat.add(kategoria);
+        }
+    }
+
+    public void addKirjoittaja(Kirjoittaja kirjoittaja) {
+        if (kirjoittaja != null) {
+            kirjoittajat.add(kirjoittaja);
+        }
     }
 }

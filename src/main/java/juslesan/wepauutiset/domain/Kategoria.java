@@ -5,7 +5,11 @@
  */
 package juslesan.wepauutiset.domain;
 
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +19,16 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Kategoria extends AbstractPersistable<Long>{
+public class Kategoria extends AbstractPersistable<Long> {
+
     private String nimi;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Uutinen> uutiset;
+
+    public void addUutinen(Uutinen uutinen) {
+        if (uutinen != null) {
+            uutiset.add(uutinen);
+        }
+    }
 }

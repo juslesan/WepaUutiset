@@ -19,6 +19,10 @@ and open the template in the editor.
             <p>Artikkeli: <textarea name="teksti" cols="40" rows="5"></textarea></p>
             <p>Lisää kuva: <input type="file" name="file" id="file"/></p>
             
+            <select name = "kategoriaId">
+                <option th:each="kategoria : ${kategoriat}" th:value="${kategoria.id}" 
+                        th:text="${kategoria.nimi}" >Options</option>
+            </select><br/>
             <input type="submit" value="Add"/>
         </form> 
     </body>

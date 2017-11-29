@@ -12,7 +12,7 @@ and open the template in the editor.
     <body>
 
         <h2><span th:text="${uutinen.nimi}">JCVD</span></h2>
-        <br/> <p> <span th:text="${uutinen.uutinenDate}"></span> </p>
+        <br/> <p> <span th:text="${uutinen.uutinenDate + '  , Luettu ' + uutinen.luettu + ' kertaa'}"></span> </p>
 
 
         <div>
@@ -24,15 +24,15 @@ and open the template in the editor.
         </div>
 
         <div>
-            <p> kirjoittajat</p>
+            <p> kirjoittajat:</p>
             <ul>
                 <li th:each="kirjoittaja : ${uutinen.kirjoittajat}" th:text="${kirjoittaja.nimi}"></li>
             </ul>
         </div>
         <div>
-            <p> kategoriat</p>
+            <p> kategoriat:</p>
             <ul>
-                <li th:each="kategoria : ${uutinen.kategoriat}" th:text="${kategoria.nimi}"></li>
+                <li th:each="kategoria : ${kategoriat}" th:text="${kategoria.nimi}"></li>
             </ul>
         </div>
 

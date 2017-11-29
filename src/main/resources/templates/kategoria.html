@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Kategoriat</title>
+    </head>
+    <body>
+
+        <h2> Kategoriat:</h2>
+
+        <div>
+            <ul>
+                <li th:each="kategoria : ${kategoriat}"> <a th:href="@{/uutiset/kategoriat/{kategoriaId}(kategoriaId=${kategoria.id})}" th:text="${kategoria.nimi}"></a></li>
+            </ul>
+        </div>
+        
+        <div>
+            Lisää uusi kategoria:<br/>
+            <form th:action="@{/uutiset/kategoriat}" method="POST">
+                Nimi: <input type="text" name="nimi" id="nimi"/><br/>
+                <input type="submit"/>            
+            </form>
+        </div>
+
+
+    </body>
+
+</html>
