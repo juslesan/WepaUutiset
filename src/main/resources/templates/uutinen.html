@@ -16,8 +16,12 @@ and open the template in the editor.
 
 
         <div>
-            <p> <span th:text="${uutinen.ingressi}"></span>
-                <br/><br/>
+            <p> <span th:text="${uutinen.ingressi}"></span> </p>
+            <br/>
+            <div th:if="${uutinen.kuva != null}">
+                <img th:src="@{/uutinen/{uutinenId}/kuva(uutinenId=${uutinen.id})}"/>
+            </div>
+            <br/> <p>
                 <span th:text="${uutinen.teksti}"> </span>
 
             </p>
@@ -32,11 +36,11 @@ and open the template in the editor.
         <div>
             <p> kategoriat:</p>
             <ul>
-                <li th:each="kategoria : ${kategoriat}" th:text="${kategoria.nimi}"></li>
+                <li th:each="kategoria : ${uutinen.kategoriat}" th:text="${kategoria.nimi}"></li>
             </ul>
         </div>
-
-
+        
+        <a th:href="@{/uutinen/{uutinenId}/edit(uutinenId=${uutinen.id})}">Muokkaa uutista</a>
 
     </body>
 

@@ -1,0 +1,18 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Muokkaa uutista</title>
+    </head>
+    <body>
+        <h2>Muokkaa:</h2>
+
+        <form method="POST" th:action="@{/uutinen/{uutinenId}/edit(uutinenId=${uutinen.id})}">
+            <p>Nimi: <input type="text" name="nimi" th:value="${uutinen.nimi}"/></p>
+            <p>Ingressi: <input type="text" name="ingressi" th:value="${uutinen.ingressi}"/></p>
+            <p>Artikkeli: <textarea th:placeholder="${uutinen.teksti}" name="teksti" cols="40" rows="5" ></textarea></p>
+            <p> <input class="form-control" type="text" th:value="${uutinen.teksti}" readonly="readonly" />
+                <input type="hidden" name="fleet" th:value="${uutinen.id}" /></p>
+            <input type="submit" value="Edit"/>
+        </form> 
+    </body>
+</html>

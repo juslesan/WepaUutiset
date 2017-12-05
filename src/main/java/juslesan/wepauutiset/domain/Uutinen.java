@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -31,11 +32,13 @@ public class Uutinen extends AbstractPersistable<Long> {
     private int luettu;
     private String teksti;
     private String ingressi;
+
+    @Lob
     private byte[] kuva;
     private LocalDateTime uutinenDate;
     @ManyToMany
     private List<Kirjoittaja> kirjoittajat;
-    @ManyToMany(mappedBy = "uutiset", fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Kategoria> kategoriat;
 
     public void luettuAdd() {
@@ -43,13 +46,13 @@ public class Uutinen extends AbstractPersistable<Long> {
     }
 
     public void addKategoria(Kategoria kategoria) {
-        if (kategoria != null) {
+        if (kategoria != null && !kategoriat.contains(kategoria)) {
             kategoriat.add(kategoria);
         }
     }
 
     public void addKirjoittaja(Kirjoittaja kirjoittaja) {
-        if (kirjoittaja != null) {
+        if (kirjoittaja != null && !kirjoittajat.contains(kirjoittaja)) {
             kirjoittajat.add(kirjoittaja);
         }
     }

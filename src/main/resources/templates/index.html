@@ -11,14 +11,21 @@
 
         <h2>Uutiset! </h2>
 
+
         <div>
-            <ul>
-               <li th:each="uutinen : ${uutiset}"> <a th:href="@{/uutinen/{uutinenId}(uutinenId=${uutinen.id})}" th:text="${uutinen.nimi + ', ' + uutinen.uutinenDate}"></a></li>
+            <ul> <li th:each="uutinen : ${uutiset}"> <a th:href="@{uutinen/{uutinenId}(uutinenId=${uutinen.id})}" th:text="${uutinen.nimi}" style="font-size: 24px;"></a>
+                        <p> <span th:text="${uutinen.ingressi}"></span> </p>
+                        <div th:if="${uutinen.kuva != null}">
+                            <img th:src="@{/uutinen/{uutinenId}/kuva(uutinenId=${uutinen.id})}"/>
+                        </div>
+                        <br/>
+                </li>
             </ul>
         </div>
 
         <a href="/uutinen/add">Lisää uutinen</a><br/>
-        
+        <a href="/uutiset/kirjoittajat">Lista kirjoittajista</a><br/>
+
 
     </body>
 

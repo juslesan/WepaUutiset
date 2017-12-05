@@ -1,21 +1,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8" />
-        <title>Kategoriat</title>
+        <title>Kirjoittajat</title>
     </head>
     <body>
         <a th:href="@{/etusivu}" th:text="Etusivu"></a>
-        <h2> Kategoriat:</h2>
+        <h2> Kirjoittajat:</h2>
 
         <div>
             <ul>
-                <li th:each="kategoria : ${kategoriat}"> <a th:href="@{/uutiset/kategoriat/{kategoriaId}(kategoriaId=${kategoria.id})}" th:text="${kategoria.nimi}"></a></li>
+                <li th:each="kirjoittaja : ${kirjoittajat}"> <p> <span th:text="${kirjoittaja.nimi}"> </span></p></li>
             </ul>
         </div>
-        
+
         <div>
-            Lisää uusi kategoria:<br/>
-            <form th:action="@{/uutiset/kategoriat}" method="POST">
+            Lisää uusi kirjoittaja:<br/>
+            <form th:action="@{/uutiset/kirjoittajat}" method="POST">
                 Nimi: <input type="text" name="nimi" id="nimi"/><br/>
                 <input type="submit"/>            
             </form>

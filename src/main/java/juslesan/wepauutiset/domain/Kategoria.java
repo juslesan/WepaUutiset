@@ -23,11 +23,11 @@ public class Kategoria extends AbstractPersistable<Long> {
 
     private String nimi;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "kategoriat", fetch = FetchType.EAGER)
     private List<Uutinen> uutiset;
 
     public void addUutinen(Uutinen uutinen) {
-        if (uutinen != null) {
+        if (uutinen != null && !uutiset.contains(uutinen)) {
             uutiset.add(uutinen);
         }
     }
