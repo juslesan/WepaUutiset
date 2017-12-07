@@ -108,9 +108,9 @@ public class UutinenController {
         uutinen.setTeksti(teksti);
         uutinen.setNimi(nimi);
         uutinen.setUutinenDate(LocalDateTime.now());
-//        if (file.getContentType().equals("image/jpg")) {
+        if (file.getContentType().equals("image/jpeg")) {
         uutinen.setKuva(file.getBytes());
-//        }
+        }
 //        if (file.getContentType().equals("image/png")) {
 //            uutinen.setKuva(file.getBytes());
 //        }
@@ -126,7 +126,7 @@ public class UutinenController {
 //        model.addAttribute("uutinenId", uutinenId);
 //        return "";
 //    }
-    @GetMapping(path = "/uutinen/{uutinenId}/kuva", produces = "image/jpg")
+    @GetMapping(path = "/uutinen/{uutinenId}/kuva", produces = "image/jpeg")
     @ResponseBody
     public byte[] getKuva(@PathVariable Long uutinenId) {
         return this.uutinenRepo.getOne(uutinenId).getKuva();
