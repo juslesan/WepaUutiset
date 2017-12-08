@@ -102,4 +102,36 @@ public class UutinenTest {
 
         assertEquals("nimi", uutinen.getKirjoittajat().get(0).getNimi());
     }
+
+    @Test
+    public void uutinenAdd() throws FileNotFoundException, IOException {
+        Uutinen uutinen = new Uutinen();
+        uutinen.setNimi("nimi");
+        uutinen.setIngressi("ingressi");
+        uutinen.setTeksti("teksti");
+        File file = new File("src/test/java/BibFrog.jpg");
+        byte[] picInBytes = new byte[(int) file.length()];
+        FileInputStream stream = new FileInputStream(file);
+        stream.read(picInBytes);
+        stream.close();
+        uutinen.setKuva(picInBytes);
+        Kategoria kategoria = new Kategoria();
+
+        Kirjoittaja kirjoittaja = new Kirjoittaja();
+        kirjoittaja.setNimi("nimi");
+        kategoria.setNimi("nimi");
+        kirjoittaja.setUutiset(new ArrayList());
+        kirjoittaja.addUutinen(uutinen);
+        kirjoittajaRepo.save(kirjoittaja);
+        kategoria.setUutiset(new ArrayList());
+        kategoria.addUutinen(uutinen);
+        kategoriaRepo.save(kategoria);
+        uutinen.setKategoriat(new ArrayList());
+        uutinen.setKirjoittajat(new ArrayList());
+        uutinen.addKategoria(kategoria);
+        uutinen.addKirjoittaja(kirjoittaja);
+        
+        uutisRepo.save(uutinen);
+        assertEquals(1, uutinen.getId().compareTo(new Long(11)));
+    }
 }
