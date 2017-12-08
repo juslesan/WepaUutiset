@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <title>Uutiset!</title>
+    </head>
+    <body>
+        <a style ="padding-right: 2em;" href="/etusivu">Etusivu</a>
+        <a style ="padding-right: 2em;" href="/uutiset/kategoriat/1">Urheilu</a>
+        <a style ="padding-right: 2em;" href="/uutiset/kategoriat/2">Kulttuuri</a>
+        <a style ="padding-right: 2em;" href="/uutiset/kategoriat/3">Viihde</a>
+        <a style ="padding-right: 2em;" href="/uutiset/kategoriat/4">Sää</a>
+        <a style ="padding-right: 2em;" href="/uutiset/kategoriat/5">Terveys</a>
+        <a style ="padding-right: 2em;" href="/uutiset/luetuimmat">Luetuimmat</a>
+        <a style ="padding-right: 2em;" href="/uutiset">Kaikki Uutiset</a>
+        <a style ="padding-right: 2em;" href="/uutinen/add">Lisää uutinen</a><br/><br/>
+
+
+        <div style= "width: 900px">
+            <div class="" style="float: left; width: 200px;">
+                <p> Kaikki uutiset: </p>
+
+                <ul>
+                    <li th:each="uutinenKaikki : ${kaikki}"> <a th:href="@{/uutinen/{uutinenId}(uutinenId=${uutinenKaikki.id})}" th:text="${uutinenKaikki.nimi + ', ' + uutinenKaikki.uutinenDate}"></a></li>
+                </ul>
+            </div>
+            <div style="float: left; width: 500px;" th:include="this :: content"/>
+            <div style ="float: left; width: 200px;">
+                <p> Luetuimmat: </p>
+                <ul>
+                    <li th:each="uutinen : ${luetuimmat}"> <a th:href="@{/uutinen/{uutinenId}(uutinenId=${uutinen.id})}" th:text="${uutinen.nimi + ', ' + uutinen.uutinenDate}"></a></li>
+                </ul>
+            </div>
+        </div>
+        <footer>
+        </footer>
+
+    </body>
+
+</html>

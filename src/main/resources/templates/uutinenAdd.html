@@ -4,45 +4,47 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:include="base">
     <head>
         <meta charset="UTF-8"/>
 
         <title>Lisää uutinen</title>
     </head>
     <body>
-        <h2>Lisää uutinen</h2>
+        <div th:fragment="content">
+            <h2>Lisää uutinen</h2>
 
-        <form method="POST" th:action="@{/uutinen/add}" enctype="multipart/form-data">
-            <p>Nimi: <input type="text" name="nimi"/></p>
-            <p>Ingressi: <input type="text" name="ingressi"/></p>
-            <p>Artikkeli: <textarea name="teksti" cols="40" rows="5"></textarea></p>
-            <p>Lisää kuva: <input type="file" name="file" id="file"/></p>
+            <form method="POST" th:action="@{/uutinen/add}" enctype="multipart/form-data">
+                <p>Nimi: <input type="text" name="nimi"/></p>
+                <p>Ingressi: <input type="text" name="ingressi"/></p>
+                <p>Artikkeli: <textarea name="teksti" cols="40" rows="5"></textarea></p>
+                <p>Lisää kuva: <input type="file" name="file" id="file"/></p>
 
-            <!--            <select name = "kategoriaId">
-                            <option th:each="kategoria : ${kategoriat}" th:value="${kategoria.id}" 
-                                    th:text="${kategoria.nimi}" >Options</option>
-                        </select><br/>-->
-            <p> Valitse kategoriat: </p>
+                <!--            <select name = "kategoriaId">
+                                <option th:each="kategoria : ${kategoriat}" th:value="${kategoria.id}" 
+                                        th:text="${kategoria.nimi}" >Options</option>
+                            </select><br/>-->
+                <p> Valitse kategoriat: </p>
 
-            <div class="checkbox" th:each="kategoria : ${kategoriat}">
-                <label> 
-                    <input type="checkbox" id="kategoria" name="kategoria" th:text="${kategoria.nimi}"
-                           th:value="${kategoria.id}"></input> 
-                    <input type="hidden" id="kateg" name="kateg" th:value="${kategoria.id}" />
-                </label>
-            </div>
-            <p> Valitse kirjoittajat: </p>
-            <div class="checkbox" th:each="kirjoittaja : ${kirjoittajat}">
+                <div class="checkbox" th:each="kategoria : ${kategoriat}">
+                    <label> 
+                        <input type="checkbox" id="kategoria" name="kategoria" th:text="${kategoria.nimi}"
+                               th:value="${kategoria.id}"></input> 
+                        <input type="hidden" id="kateg" name="kateg" th:value="${kategoria.id}" />
+                    </label>
+                </div>
+                <p> Valitse kirjoittajat: </p>
+                <div class="checkbox" th:each="kirjoittaja : ${kirjoittajat}">
 
-                <label> 
-                    <input type="checkbox" id="kirjoittaja" name="kirjoittaja" th:text="${kirjoittaja.nimi}"
-                           th:value="${kirjoittaja.id}"></input> 
-                    <input type="hidden" id="user" name="user" th:value="${kirjoittaja.id}" />
-                </label>
-            </div>
-            <br/>
-            <input type="submit" value="Add"/>
-        </form> 
+                    <label> 
+                        <input type="checkbox" id="kirjoittaja" name="kirjoittaja" th:text="${kirjoittaja.nimi}"
+                               th:value="${kirjoittaja.id}"></input> 
+                        <input type="hidden" id="user" name="user" th:value="${kirjoittaja.id}" />
+                    </label>
+                </div>
+                <br/>
+                <input type="submit" value="Add"/>
+            </form>
+        </div>
     </body>
 </html>

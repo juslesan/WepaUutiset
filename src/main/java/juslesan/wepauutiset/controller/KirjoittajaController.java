@@ -28,15 +28,17 @@ public class KirjoittajaController {
 
     @Autowired
     private KirjoittajaRepository kirjoittajaRepo;
-    
+
     @PostConstruct
     public void init() {
-        kirjoittajaRepo.save(new Kirjoittaja("Matti Meikäläinen", new ArrayList()));
-        kirjoittajaRepo.save(new Kirjoittaja("Arto", new ArrayList()));
-        kirjoittajaRepo.save(new Kirjoittaja("Matti", new ArrayList()));
-        kirjoittajaRepo.save(new Kirjoittaja("Supermies", new ArrayList()));
-        kirjoittajaRepo.save(new Kirjoittaja("Maija Mehiläinen", new ArrayList()));
+        if (kirjoittajaRepo.findAll().isEmpty()) {
+            kirjoittajaRepo.save(new Kirjoittaja("Matti Meikäläinen", new ArrayList()));
+            kirjoittajaRepo.save(new Kirjoittaja("Arto", new ArrayList()));
+            kirjoittajaRepo.save(new Kirjoittaja("Matti", new ArrayList()));
+            kirjoittajaRepo.save(new Kirjoittaja("Supermies", new ArrayList()));
+            kirjoittajaRepo.save(new Kirjoittaja("Maija Mehiläinen", new ArrayList()));
 
+        }
     }
 
     @GetMapping("/uutiset/kirjoittajat")

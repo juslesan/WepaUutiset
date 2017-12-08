@@ -4,43 +4,43 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:include="base">
     <head>
         <meta charset="UTF-8" />
         <title>Uutinen</title>
     </head>
     <body>
+        <div th:fragment="content">
+            <h2><span th:text="${uutinen.nimi}">JCVD</span></h2>
+            <br/> <p> <span th:text="${uutinen.uutinenDate + '  , Luettu ' + uutinen.luettu + ' kertaa'}"></span> </p>
 
-        <h2><span th:text="${uutinen.nimi}">JCVD</span></h2>
-        <br/> <p> <span th:text="${uutinen.uutinenDate + '  , Luettu ' + uutinen.luettu + ' kertaa'}"></span> </p>
 
+            <div>
+                <p> <span th:text="${uutinen.ingressi}"></span> </p>
+                <br/>
+                <div th:if="${uutinen.kuva != null}">
+                    <img th:src="@{/uutinen/{uutinenId}/kuva(uutinenId=${uutinen.id})}" alt=""/>
+                </div>
+                <br/> <p>
+                    <span th:text="${uutinen.teksti}"> </span>
 
-        <div>
-            <p> <span th:text="${uutinen.ingressi}"></span> </p>
-            <br/>
-            <div th:if="${uutinen.kuva != null}">
-                <img th:src="@{/uutinen/{uutinenId}/kuva(uutinenId=${uutinen.id})}"/>
+                </p>
             </div>
-            <br/> <p>
-                <span th:text="${uutinen.teksti}"> </span>
 
-            </p>
+            <div>
+                <p> kirjoittajat:</p>
+                <ul>
+                    <li th:each="kirjoittaja : ${uutinen.kirjoittajat}" th:text="${kirjoittaja.nimi}"></li>
+                </ul>
+            </div>
+            <div>
+                <p> kategoriat:</p>
+                <ul>
+                    <li th:each="kategoria : ${uutinen.kategoriat}" th:text="${kategoria.nimi}"></li>
+                </ul>
+            </div>
         </div>
-
-        <div>
-            <p> kirjoittajat:</p>
-            <ul>
-                <li th:each="kirjoittaja : ${uutinen.kirjoittajat}" th:text="${kirjoittaja.nimi}"></li>
-            </ul>
-        </div>
-        <div>
-            <p> kategoriat:</p>
-            <ul>
-                <li th:each="kategoria : ${uutinen.kategoriat}" th:text="${kategoria.nimi}"></li>
-            </ul>
-        </div>
-        
-        <a th:href="@{/uutinen/{uutinenId}/edit(uutinenId=${uutinen.id})}">Muokkaa uutista</a>
+        <!--        <a th:href="@{/uutinen/{uutinenId}/edit(uutinenId=${uutinen.id})}">Muokkaa uutista</a>-->
 
     </body>
 

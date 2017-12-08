@@ -1,26 +1,26 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:include="base">
     <head>
         <meta charset="UTF-8" />
         <title>Kirjoittajat</title>
     </head>
     <body>
-        <a th:href="@{/etusivu}" th:text="Etusivu"></a>
-        <h2> Kirjoittajat:</h2>
+        <div th:fragment="content">
+            <h2> Kirjoittajat:</h2>
 
-        <div>
-            <ul>
-                <li th:each="kirjoittaja : ${kirjoittajat}"> <p> <span th:text="${kirjoittaja.nimi}"> </span></p></li>
-            </ul>
+            <div>
+                <ul>
+                    <li th:each="kirjoittaja : ${kirjoittajat}"> <p> <span th:text="${kirjoittaja.nimi}"> </span></p></li>
+                </ul>
+            </div>
+
+            <div>
+                Lisää uusi kirjoittaja:<br/>
+                <form th:action="@{/uutiset/kirjoittajat}" method="POST">
+                    Nimi: <input type="text" name="nimi" id="nimi"/><br/>
+                    <input type="submit"/>            
+                </form>
+            </div>
         </div>
-
-        <div>
-            Lisää uusi kirjoittaja:<br/>
-            <form th:action="@{/uutiset/kirjoittajat}" method="POST">
-                Nimi: <input type="text" name="nimi" id="nimi"/><br/>
-                <input type="submit"/>            
-            </form>
-        </div>
-
 
     </body>
 

@@ -29,12 +29,13 @@ public class KategoriaController {
 
     @PostConstruct
     public void init() {
-        kategoriaRepo.save(new Kategoria("Urheilu", new ArrayList()));
-        kategoriaRepo.save(new Kategoria("Kulttuuri", new ArrayList()));
-        kategoriaRepo.save(new Kategoria("Viihde", new ArrayList()));
-        kategoriaRepo.save(new Kategoria("Sää", new ArrayList()));
-        kategoriaRepo.save(new Kategoria("Terveys", new ArrayList()));
-
+        if (kategoriaRepo.findAll().isEmpty()) {
+            kategoriaRepo.save(new Kategoria("Urheilu", new ArrayList()));
+            kategoriaRepo.save(new Kategoria("Kulttuuri", new ArrayList()));
+            kategoriaRepo.save(new Kategoria("Viihde", new ArrayList()));
+            kategoriaRepo.save(new Kategoria("Sää", new ArrayList()));
+            kategoriaRepo.save(new Kategoria("Terveys", new ArrayList()));
+        }
     }
 
     @GetMapping("/uutiset/kategoriat")

@@ -36,59 +36,83 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Controller
 public class UutinenController {
-    
+
     @Autowired
     private UutinenRepository uutinenRepo;
-    
+
     @Autowired
     private KategoriaRepository kategoriaRepo;
-    
+
     @Autowired
     private KirjoittajaRepository kirjoittajaRepo;
-    
+
     @GetMapping("/etusivu")
     public String etusivu(Model model) {
-        Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "uutinenDate");
-        model.addAttribute("uutiset", uutinenRepo.findAll(pageable));
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
+        model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));
+        Pageable pageable2 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
+        model.addAttribute("kaikki", uutinenRepo.findAll(pageable2));
+        Pageable pageable3 = PageRequest.of(0, 5, Sort.Direction.DESC, "uutinenDate");
+        model.addAttribute("uutiset", uutinenRepo.findAll(pageable3));
         return "index";
     }
-    
+
     @GetMapping("/uutiset")
     public String dateSort(Model model) {
-        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
-        model.addAttribute("uutiset", uutinenRepo.findAll(pageable));
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
+        model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));
+        Pageable pageable2 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
+        model.addAttribute("kaikki", uutinenRepo.findAll(pageable2));
+        Pageable pageable3 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
+        model.addAttribute("uutiset", uutinenRepo.findAll(pageable3));
         return "uutiset";
     }
-    
+
     @GetMapping("/uutiset/luetuimmat")
     public String luetuimmat(Model model) {
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
-        model.addAttribute("uutiset", uutinenRepo.findAll(pageable));
+        model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));
+        Pageable pageable2 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
+        model.addAttribute("kaikki", uutinenRepo.findAll(pageable2));
+        Pageable pageable3 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
+        model.addAttribute("uutiset", uutinenRepo.findAll(pageable3));
         return "uutiset";
     }
-    
+
     @GetMapping("/uutiset/kategoriat/{kategoriaId}")
     public String kategoria(Model model, @PathVariable Long kategoriaId) {
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
+        model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));
+        Pageable pageable2 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
+        model.addAttribute("kaikki", uutinenRepo.findAll(pageable2));
         model.addAttribute("uutiset", this.kategoriaRepo.getOne(kategoriaId).getUutiset());
         return "uutiset";
     }
-    
+
     @Transactional
     @GetMapping("/uutinen/{uutinenId}")
     public String uutinen(Model model, @PathVariable Long uutinenId) {
         this.uutinenRepo.findById(uutinenId).get().luettuAdd();
         model.addAttribute("uutinen", this.uutinenRepo.getOne(uutinenId));
 //        model.addAttribute("kategoriat", this.uutinenRepo.getOne(uutinenId).getKategoriat());
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
+        model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));
+        Pageable pageable2 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
+        model.addAttribute("kaikki", uutinenRepo.findAll(pageable2));
         return "uutinen";
     }
-    
+
     @GetMapping("/uutinen/add")
     public String addPage(Model model) {
         model.addAttribute("kategoriat", this.kategoriaRepo.findAll());
         model.addAttribute("kirjoittajat", this.kirjoittajaRepo.findAll());
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
+        model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));
+        Pageable pageable2 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
+        model.addAttribute("kaikki", uutinenRepo.findAll(pageable2));
         return "uutinenAdd";
     }
-    
+
     @Transactional
     @PostMapping("/uutinen/add")
     public String addUutinen(@RequestParam String nimi, @RequestParam String ingressi, @RequestParam String teksti, @RequestParam("kategoria") Long[] kategoriat, @RequestParam("kirjoittaja") Long[] kirjoittajat, @RequestParam("file") MultipartFile file) throws IOException {
@@ -99,7 +123,7 @@ public class UutinenController {
             kategoriat2.add(this.kategoriaRepo.getOne(kategoria));
         }
         uutinen.setKategoriat(kategoriat2);
-        
+
         ArrayList<Kirjoittaja> kirjoittajat2 = new ArrayList();
         for (Long kirjoittaja : kirjoittajat) {
             kirjoittajat2.add(this.kirjoittajaRepo.getOne(kirjoittaja));
@@ -109,7 +133,7 @@ public class UutinenController {
         uutinen.setNimi(nimi);
         uutinen.setUutinenDate(LocalDateTime.now());
         if (file.getContentType().equals("image/jpeg")) {
-        uutinen.setKuva(file.getBytes());
+            uutinen.setKuva(file.getBytes());
         }
 //        if (file.getContentType().equals("image/png")) {
 //            uutinen.setKuva(file.getBytes());
@@ -131,7 +155,7 @@ public class UutinenController {
     public byte[] getKuva(@PathVariable Long uutinenId) {
         return this.uutinenRepo.getOne(uutinenId).getKuva();
     }
-    
+
     @GetMapping("/uutinen/{uutinenId}/edit")
     public String editPage(Model model, @PathVariable Long uutinenId) {
         model.addAttribute("kategoriat", this.kategoriaRepo.findAll());
@@ -139,7 +163,7 @@ public class UutinenController {
         model.addAttribute("uutinen", this.uutinenRepo.getOne(uutinenId));
         return "uutinenEdit";
     }
-    
+
     @Transactional
     @PostMapping("/uutinen/{uutinenId}/edit")
     public String editUutinen(@PathVariable Long uutinenId, @RequestParam String nimi, @RequestParam String ingressi, @RequestParam String teksti) {
@@ -149,5 +173,5 @@ public class UutinenController {
         uutinen.setTeksti(teksti);
         return "redirect:/uutinen/" + uutinen.getId();
     }
-    
+
 }
