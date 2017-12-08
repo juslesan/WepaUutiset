@@ -5,8 +5,11 @@
  */
 package juslesan.wepauutiset.domain;
 
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,6 +40,7 @@ public class Uutinen extends AbstractPersistable<Long> {
 
 //    @Column(name="kuva")
     @Lob
+    @Basic(fetch = FetchType.LAZY)
     private byte[] kuva;
     private LocalDateTime uutinenDate;
     @ManyToMany
@@ -59,4 +63,23 @@ public class Uutinen extends AbstractPersistable<Long> {
             kirjoittajat.add(kirjoittaja);
         }
     }
+
+//    public void setKuva(byte[] kuva) {
+//        try {
+//            this.kuva.setBytes(0, kuva);
+//        } catch (SQLException e) {
+//            System.out.println(e);
+//
+//        }
+//    }
+//
+//    public byte[] getKuva() {
+//        try {
+//            return this.kuva.getBytes(0, Integer.MAX_VALUE);
+//        } catch (SQLException e) {
+//            System.out.println(e);
+//
+//        }
+//        return null;
+//    }
 }

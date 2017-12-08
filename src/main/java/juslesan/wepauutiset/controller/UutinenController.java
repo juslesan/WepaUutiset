@@ -7,6 +7,7 @@ package juslesan.wepauutiset.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +116,7 @@ public class UutinenController {
 
     @Transactional
     @PostMapping("/uutinen/add")
-    public String addUutinen(@RequestParam String nimi, @RequestParam String ingressi, @RequestParam String teksti, @RequestParam("kategoria") Long[] kategoriat, @RequestParam("kirjoittaja") Long[] kirjoittajat, @RequestParam("file") MultipartFile file) throws IOException {
+    public String addUutinen(@RequestParam String nimi, @RequestParam String ingressi, @RequestParam String teksti, @RequestParam("kategoria") Long[] kategoriat, @RequestParam("kirjoittaja") Long[] kirjoittajat, @RequestParam("file") MultipartFile file) throws IOException, SQLException {
         Uutinen uutinen = new Uutinen();
         uutinen.setIngressi(ingressi);
         ArrayList<Kategoria> kategoriat2 = new ArrayList();
@@ -152,7 +153,7 @@ public class UutinenController {
 //    }
     @GetMapping(path = "/uutinen/{uutinenId}/kuva", produces = "image/jpeg")
     @ResponseBody
-    public byte[] getKuva(@PathVariable Long uutinenId) {
+    public byte[] getKuva(@PathVariable Long uutinenId) throws SQLException {
         return this.uutinenRepo.getOne(uutinenId).getKuva();
     }
 
