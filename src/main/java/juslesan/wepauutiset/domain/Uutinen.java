@@ -41,7 +41,6 @@ public class Uutinen extends AbstractPersistable<Long> {
 //    @Column(name="kuva")
     @Lob
     @Column(name="kuva")
-    @Type(type = "org.hibernate.type.BinaryType")
     private byte[] kuva;
     private LocalDateTime uutinenDate;
     @ManyToMany

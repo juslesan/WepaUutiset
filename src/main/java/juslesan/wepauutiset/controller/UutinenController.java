@@ -6,6 +6,7 @@
 package juslesan.wepauutiset.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -134,7 +135,13 @@ public class UutinenController {
         uutinen.setNimi(nimi);
         uutinen.setUutinenDate(LocalDateTime.now());
 //        if (file.getContentType().equals("image/jpeg")) {
-            uutinen.setKuva(file.getBytes());
+        byte[] picInBytes = new byte[(int) file.getSize()];
+        
+        FileInputStream fileInputStream = (FileInputStream) file.getInputStream();
+        fileInputStream.read(picInBytes);
+        fileInputStream.close();
+        uutinen.setKuva(picInBytes);
+
 //        }
 //        if (file.getContentType().equals("image/png")) {
 //            uutinen.setKuva(file.getBytes());
