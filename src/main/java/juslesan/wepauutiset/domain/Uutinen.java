@@ -35,7 +35,7 @@ public class Uutinen extends AbstractPersistable<Long> {
     private String teksti;
     private String ingressi;
 
-    @Column(name="kuva")
+//    @Column(name="kuva")
     @Lob
     private byte[] kuva;
     private LocalDateTime uutinenDate;

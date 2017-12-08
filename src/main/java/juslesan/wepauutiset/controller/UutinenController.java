@@ -132,9 +132,9 @@ public class UutinenController {
         uutinen.setTeksti(teksti);
         uutinen.setNimi(nimi);
         uutinen.setUutinenDate(LocalDateTime.now());
-        if (file.getContentType().equals("image/jpeg")) {
+//        if (file.getContentType().equals("image/jpeg")) {
             uutinen.setKuva(file.getBytes());
-        }
+//        }
 //        if (file.getContentType().equals("image/png")) {
 //            uutinen.setKuva(file.getBytes());
 //        }
