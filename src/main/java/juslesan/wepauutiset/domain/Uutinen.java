@@ -40,7 +40,8 @@ public class Uutinen extends AbstractPersistable<Long> {
 
 //    @Column(name="kuva")
     @Lob
-    @Basic(fetch = FetchType.LAZY)
+    @Column(name="kuva")
+    @Type(type = "org.hibernate.type.BinaryType")
     private byte[] kuva;
     private LocalDateTime uutinenDate;
     @ManyToMany
