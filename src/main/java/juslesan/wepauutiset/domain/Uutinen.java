@@ -38,7 +38,6 @@ public class Uutinen extends AbstractPersistable<Long> {
     private String teksti;
     private String ingressi;
 
-//    @Column(name="kuva")
     @Lob
     @Column(name="kuva")
     private byte[] kuva;
