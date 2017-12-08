@@ -7,6 +7,7 @@ package juslesan.wepauutiset.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 /**
@@ -33,6 +35,7 @@ public class Uutinen extends AbstractPersistable<Long> {
     private String teksti;
     private String ingressi;
 
+    @Column(name="kuva")
     @Lob
     private byte[] kuva;
     private LocalDateTime uutinenDate;
