@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import javax.transaction.Transactional;
 import juslesan.wepauutiset.domain.Kategoria;
@@ -138,9 +137,7 @@ public class UutinenController {
             uutinen.setUutinenDate(LocalDateTime.now());
             if (file.getContentType().equals("image/jpeg")) {
 
-                String encoded = Base64.getEncoder().encodeToString(file.getBytes());
-                byte[] decoded = Base64.getDecoder().decode(encoded);
-                uutinen.setKuva(decoded);
+                uutinen.setKuva(file.getBytes());
 
             }
 //        if (file.getContentType().equals("image/png")) {
