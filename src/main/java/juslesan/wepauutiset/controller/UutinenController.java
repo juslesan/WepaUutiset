@@ -25,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -127,24 +128,30 @@ public class UutinenController {
         return this.uutinenRepo.getOne(uutinenId).getKuva();
     }
 
-//    
-//    @GetMapping("/uutinen/{uutinenId}/edit")
-//    public String editPage(Model model, @PathVariable Long uutinenId) {
-//        model.addAttribute("kategoriat", this.kategoriaRepo.findAll());
-//        model.addAttribute("kirjoittajat", this.kirjoittajaRepo.findAll());
-//        model.addAttribute("uutinen", this.uutinenRepo.getOne(uutinenId));
-//        return "uutinenEdit";
-//    }
-//
-//    @Transactional
-//    @PostMapping("/uutinen/{uutinenId}/edit")
-//    public String editUutinen(@PathVariable Long uutinenId, @RequestParam String nimi, @RequestParam String ingressi, @RequestParam String teksti) {
-//        Uutinen uutinen = this.uutinenRepo.getOne(uutinenId);
-//        uutinen.setNimi(nimi);
-//        uutinen.setIngressi(ingressi);
-//        uutinen.setTeksti(teksti);
-//        return "redirect:/uutinen/" + uutinen.getId();
-//    }
+    @GetMapping("/uutinen/{uutinenId}/edit")
+    public String editPage(Model model, @PathVariable Long uutinenId) {
+        model.addAttribute("kategoriat", this.kategoriaRepo.findAll());
+        model.addAttribute("kirjoittajat", this.kirjoittajaRepo.findAll());
+        model.addAttribute("uutinen", this.uutinenRepo.getOne(uutinenId));
+        return "uutinenEdit";
+    }
+
+    @Transactional
+    @PostMapping("/uutinen/{uutinenId}/edit")
+    public String editUutinen(@PathVariable Long uutinenId, @RequestParam String nimi, @RequestParam String ingressi, @RequestParam String teksti) {
+        Uutinen uutinen = this.uutinenRepo.getOne(uutinenId);
+        uutinen.setNimi(nimi);
+        uutinen.setIngressi(ingressi);
+        uutinen.setTeksti(teksti);
+        return "redirect:/uutinen/" + uutinen.getId();
+    }
+
+    @DeleteMapping("/uutinen/{uutinenId/delete}")
+    public String poistaUutinen(@PathVariable Long uutinenId) {
+        this.uutinenRepo.deleteById(uutinenId);
+        return "redirect:/etusivu";
+    }
+
     // 
     // Sivuston kaikilla sivuilla näkyvien palkkien lisääminen modeliin
     public Model sivupalkit(Model model) {

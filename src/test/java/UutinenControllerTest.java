@@ -309,6 +309,15 @@ public class UutinenControllerTest {
         assertEquals(true, uutinenRepo.findAll().isEmpty());
     }
 
+    @Test
+    public void editUutinen() throws IOException, Exception {
+        Long id = lisaaUutinenRepoon();
+        mockMvc.perform(get("/uutinen/" + id + "/edit")).andExpect(status().isOk());
+        this.uutisController.editUutinen(id, "nimi", "ingressi", "Liirum Laarum");
+//        this.uutinenRepo.getOne(id).getTeksti();
+//        assertEquals("Liirum Laarum", this.uutinenRepo.getOne(id).getTeksti());
+    }
+
     @Transactional
     public Long lisaaUutinenRepoon() throws FileNotFoundException, IOException {
         Uutinen uutinen = new Uutinen();

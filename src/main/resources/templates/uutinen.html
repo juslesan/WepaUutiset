@@ -39,8 +39,9 @@ and open the template in the editor.
                     <li th:each="kategoria : ${uutinen.kategoriat}" th:text="${kategoria.nimi}"></li>
                 </ul>
             </div>
+            <a th:href="@{/uutinen/{uutinenId}/edit(uutinenId=${uutinen.id})}">Muokkaa uutista</a>
+
         </div>
-        <!--        <a th:href="@{/uutinen/{uutinenId}/edit(uutinenId=${uutinen.id})}">Muokkaa uutista</a>-->
 
     </body>
 
