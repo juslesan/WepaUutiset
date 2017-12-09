@@ -23,14 +23,14 @@
 
 
         <div style= "width: 900px">
-            <div class="" style="float: left; width: 200px;">
+            <div class="" style="float: left; width: 200px; padding-right: 1em;">
                 <p> Kaikki uutiset: </p>
 
                 <ul>
                     <li th:each="uutinenKaikki : ${kaikki}"> <a th:href="@{/uutinen/{uutinenId}(uutinenId=${uutinenKaikki.id})}" th:text="${uutinenKaikki.nimi + ', ' + uutinenKaikki.uutinenDate}"></a></li>
                 </ul>
             </div>
-            <div style="float: left; width: 500px;" th:include="this :: content"/>
+            <div style="float: left; width: 500px; padding-right: 1em;" th:include="this :: content"/>
             <div style ="float: left; width: 200px;">
                 <p> Luetuimmat: </p>
                 <ul>
