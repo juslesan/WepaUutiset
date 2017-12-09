@@ -46,10 +46,13 @@ public class KategoriaController {
 
     @PostMapping("/uutiset/kategoriat")
     public String addKategoria(@RequestParam String nimi) {
-        Kategoria kategoria = new Kategoria();
-        kategoria.setUutiset(new ArrayList());
-        kategoria.setNimi(nimi);
-        kategoriaRepo.save(kategoria);
+        if (!nimi.isEmpty()) {
+            Kategoria kategoria = new Kategoria();
+            kategoria.setUutiset(new ArrayList());
+            kategoria.setNimi(nimi);
+            kategoriaRepo.save(kategoria);
+        }
         return "redirect:/uutiset/kategoriat";
+
     }
 }

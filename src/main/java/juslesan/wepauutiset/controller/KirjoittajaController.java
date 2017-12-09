@@ -49,10 +49,13 @@ public class KirjoittajaController {
 
     @PostMapping("/uutiset/kirjoittajat")
     public String addKirjoittaja(@RequestParam String nimi) {
-        Kirjoittaja kirjoittaja = new Kirjoittaja();
-        kirjoittaja.setUutiset(new ArrayList());
-        kirjoittaja.setNimi(nimi);
-        kirjoittajaRepo.save(kirjoittaja);
+        if (!nimi.isEmpty()) {
+            Kirjoittaja kirjoittaja = new Kirjoittaja();
+            kirjoittaja.setUutiset(new ArrayList());
+            kirjoittaja.setNimi(nimi);
+            kirjoittajaRepo.save(kirjoittaja);
+        }
         return "redirect:/uutiset/kirjoittajat";
+
     }
 }

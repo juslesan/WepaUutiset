@@ -118,35 +118,38 @@ public class UutinenController {
     @Transactional
     @PostMapping("/uutinen/add")
     public String addUutinen(@RequestParam String nimi, @RequestParam String ingressi, @RequestParam String teksti, @RequestParam("kategoria") Long[] kategoriat, @RequestParam("kirjoittaja") Long[] kirjoittajat, @RequestParam("file") MultipartFile file) throws IOException, SQLException {
-        Uutinen uutinen = new Uutinen();
-        uutinen.setIngressi(ingressi);
-        ArrayList<Kategoria> kategoriat2 = new ArrayList();
-        for (Long kategoria : kategoriat) {
-            kategoriat2.add(this.kategoriaRepo.getOne(kategoria));
-        }
-        uutinen.setKategoriat(kategoriat2);
+        if (!nimi.isEmpty() && !ingressi.isEmpty() && !teksti.isEmpty() && kategoriat.length > 0 && kirjoittajat.length > 0 && !file.isEmpty()) {
+            Uutinen uutinen = new Uutinen();
+            uutinen.setIngressi(ingressi);
+            ArrayList<Kategoria> kategoriat2 = new ArrayList();
+            for (Long kategoria : kategoriat) {
+                kategoriat2.add(this.kategoriaRepo.getOne(kategoria));
+            }
+            uutinen.setKategoriat(kategoriat2);
 
-        ArrayList<Kirjoittaja> kirjoittajat2 = new ArrayList();
-        for (Long kirjoittaja : kirjoittajat) {
-            kirjoittajat2.add(this.kirjoittajaRepo.getOne(kirjoittaja));
-        }
-        uutinen.setKirjoittajat(kirjoittajat2);
-        uutinen.setTeksti(teksti);
-        uutinen.setNimi(nimi);
-        uutinen.setUutinenDate(LocalDateTime.now());
-        if (file.getContentType().equals("image/jpeg")) {
-       
-        uutinen.setKuva(file.getBytes());
+            ArrayList<Kirjoittaja> kirjoittajat2 = new ArrayList();
+            for (Long kirjoittaja : kirjoittajat) {
+                kirjoittajat2.add(this.kirjoittajaRepo.getOne(kirjoittaja));
+            }
+            uutinen.setKirjoittajat(kirjoittajat2);
+            uutinen.setTeksti(teksti);
+            uutinen.setNimi(nimi);
+            uutinen.setUutinenDate(LocalDateTime.now());
+            if (file.getContentType().equals("image/jpeg")) {
 
-        }
+                uutinen.setKuva(file.getBytes());
+
+            }
 //        if (file.getContentType().equals("image/png")) {
 //            uutinen.setKuva(file.getBytes());
 //        }
-        uutinen = this.uutinenRepo.save(uutinen);
-        for (Long kategoria : kategoriat) {
-            this.kategoriaRepo.findById(kategoria).get().addUutinen(uutinen);
+            uutinen = this.uutinenRepo.save(uutinen);
+            for (Long kategoria : kategoriat) {
+                this.kategoriaRepo.findById(kategoria).get().addUutinen(uutinen);
+            }
+            return "redirect:/uutinen/" + uutinen.getId();
         }
-        return "redirect:/uutinen/" + uutinen.getId();
+        return "redirect:/uutinenAdd";
     }
 
 //    @GetMapping("/uutinen/{uutinenId}/kuva")

@@ -15,16 +15,16 @@ and open the template in the editor.
             <h2>Lisää uutinen</h2>
 
             <form method="POST" th:action="@{/uutinen/add}" enctype="multipart/form-data">
-                <p>Nimi: <input type="text" name="nimi"/></p>
-                <p>Ingressi: <input type="text" name="ingressi"/></p>
-                <p>Artikkeli: <textarea name="teksti" cols="40" rows="5"></textarea></p>
-                <p>Lisää kuva: <input type="file" name="file" id="file"/></p>
+                <p>Nimi: <input type="text" name="nimi" placeholder="Pakollinen!"/></p>
+                <p>Ingressi: <input type="text" name="ingressi" placeholder="Pakollinen!"/></p>
+                <p>Artikkeli: <textarea name="teksti" cols="40" rows="5" placeholder="Pakollinen!"></textarea></p>
+                <p>Lisää kuva: (vain jpg)<input type="file" name="file" id="file"/></p>
 
                 <!--            <select name = "kategoriaId">
                                 <option th:each="kategoria : ${kategoriat}" th:value="${kategoria.id}" 
                                         th:text="${kategoria.nimi}" >Options</option>
                             </select><br/>-->
-                <p> Valitse kategoriat: </p>
+                <p> Valitse kategoriat: (vähintään 1)</p>
 
                 <div class="checkbox" th:each="kategoria : ${kategoriat}">
                     <label> 
@@ -33,7 +33,7 @@ and open the template in the editor.
                         <input type="hidden" id="kateg" name="kateg" th:value="${kategoria.id}" />
                     </label>
                 </div>
-                <p> Valitse kirjoittajat: </p>
+                <p> Valitse kirjoittajat: (vähintään 1)</p>
                 <div class="checkbox" th:each="kirjoittaja : ${kirjoittajat}">
 
                     <label> 
