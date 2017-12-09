@@ -19,7 +19,7 @@ and open the template in the editor.
                 <p> <span th:text="${uutinen.ingressi}"></span> </p>
                 <br/>
                 <div th:if="${uutinen.kuva != null}">
-                    <img th:src="@{/uutinen/{uutinenId}/kuva(uutinenId=${uutinen.id})}" alt=""/>
+                    <img style="width:100%; height:100%" th:src="@{/uutinen/{uutinenId}/kuva(uutinenId=${uutinen.id})}" alt=""/>
                 </div>
                 <br/> <p>
                     <span th:text="${uutinen.teksti}"> </span>
