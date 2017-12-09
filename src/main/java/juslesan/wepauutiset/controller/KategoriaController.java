@@ -12,6 +12,9 @@ import juslesan.wepauutiset.domain.Kategoria;
 import juslesan.wepauutiset.repository.KategoriaRepository;
 import juslesan.wepauutiset.repository.UutinenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +43,7 @@ public class KategoriaController {
 
     @GetMapping("/uutiset/kategoriat")
     public String Kategoriat(Model model) {
+        model = sivupalkit(model);
         model.addAttribute("kategoriat", this.kategoriaRepo.findAll());
         return "kategoria";
     }
@@ -54,5 +58,13 @@ public class KategoriaController {
         }
         return "redirect:/uutiset/kategoriat";
 
+    }
+
+    public Model sivupalkit(Model model) {
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
+        model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));
+        Pageable pageable2 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
+        model.addAttribute("kaikki", uutinenRepo.findAll(pageable2));
+        return model;
     }
 }

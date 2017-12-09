@@ -50,10 +50,12 @@ public class UutinenController {
 
     @GetMapping("/etusivu")
     public String etusivu(Model model) {
-        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
-        model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));
-        Pageable pageable2 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
-        model.addAttribute("kaikki", uutinenRepo.findAll(pageable2));
+
+//        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
+//        model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));
+//        Pageable pageable2 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
+//        model.addAttribute("kaikki", uutinenRepo.findAll(pageable2));
+        model = sivupalkit(model);
         Pageable pageable3 = PageRequest.of(0, 5, Sort.Direction.DESC, "uutinenDate");
         model.addAttribute("uutiset", uutinenRepo.findAll(pageable3));
         return "index";
@@ -61,10 +63,8 @@ public class UutinenController {
 
     @GetMapping("/uutiset")
     public String dateSort(Model model) {
-        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
-        model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));
-        Pageable pageable2 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
-        model.addAttribute("kaikki", uutinenRepo.findAll(pageable2));
+        model = sivupalkit(model);
+
         Pageable pageable3 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
         model.addAttribute("uutiset", uutinenRepo.findAll(pageable3));
         return "uutiset";
@@ -72,10 +72,8 @@ public class UutinenController {
 
     @GetMapping("/uutiset/luetuimmat")
     public String luetuimmat(Model model) {
-        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
-        model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));
-        Pageable pageable2 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
-        model.addAttribute("kaikki", uutinenRepo.findAll(pageable2));
+        model = sivupalkit(model);
+
         Pageable pageable3 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
         model.addAttribute("uutiset", uutinenRepo.findAll(pageable3));
         return "uutiset";
@@ -83,10 +81,7 @@ public class UutinenController {
 
     @GetMapping("/uutiset/kategoriat/{kategoriaId}")
     public String kategoria(Model model, @PathVariable Long kategoriaId) {
-        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
-        model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));
-        Pageable pageable2 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
-        model.addAttribute("kaikki", uutinenRepo.findAll(pageable2));
+        model = sivupalkit(model);
         model.addAttribute("uutiset", this.kategoriaRepo.getOne(kategoriaId).getUutiset());
         return "uutiset";
     }
@@ -94,24 +89,22 @@ public class UutinenController {
     @Transactional
     @GetMapping("/uutinen/{uutinenId}")
     public String uutinen(Model model, @PathVariable Long uutinenId) {
+        model = sivupalkit(model);
+
         this.uutinenRepo.findById(uutinenId).get().luettuAdd();
         model.addAttribute("uutinen", this.uutinenRepo.getOne(uutinenId));
 //        model.addAttribute("kategoriat", this.uutinenRepo.getOne(uutinenId).getKategoriat());
-        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
-        model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));
-        Pageable pageable2 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
-        model.addAttribute("kaikki", uutinenRepo.findAll(pageable2));
+
         return "uutinen";
     }
 
     @GetMapping("/uutinen/add")
     public String addPage(Model model) {
+        model = sivupalkit(model);
+
         model.addAttribute("kategoriat", this.kategoriaRepo.findAll());
         model.addAttribute("kirjoittajat", this.kirjoittajaRepo.findAll());
-        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
-        model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));
-        Pageable pageable2 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
-        model.addAttribute("kaikki", uutinenRepo.findAll(pageable2));
+
         return "uutinenAdd";
     }
 
@@ -119,44 +112,12 @@ public class UutinenController {
     @PostMapping("/uutinen/add")
     public String addUutinen(@RequestParam String nimi, @RequestParam String ingressi, @RequestParam String teksti, @RequestParam("kategoria") Long[] kategoriat, @RequestParam("kirjoittaja") Long[] kirjoittajat, @RequestParam("file") MultipartFile file) throws IOException, SQLException {
         if (!nimi.isEmpty() && !ingressi.isEmpty() && !teksti.isEmpty() && kategoriat.length > 0 && kirjoittajat.length > 0 && !file.isEmpty()) {
-            Uutinen uutinen = new Uutinen();
-            uutinen.setIngressi(ingressi);
-            ArrayList<Kategoria> kategoriat2 = new ArrayList();
-            for (Long kategoria : kategoriat) {
-                kategoriat2.add(this.kategoriaRepo.getOne(kategoria));
-            }
-            uutinen.setKategoriat(kategoriat2);
-
-            ArrayList<Kirjoittaja> kirjoittajat2 = new ArrayList();
-            for (Long kirjoittaja : kirjoittajat) {
-                kirjoittajat2.add(this.kirjoittajaRepo.getOne(kirjoittaja));
-            }
-            uutinen.setKirjoittajat(kirjoittajat2);
-            uutinen.setTeksti(teksti);
-            uutinen.setNimi(nimi);
-            uutinen.setUutinenDate(LocalDateTime.now());
-            if (file.getContentType().equals("image/jpeg")) {
-
-                uutinen.setKuva(file.getBytes());
-
-            }
-//        if (file.getContentType().equals("image/png")) {
-//            uutinen.setKuva(file.getBytes());
-//        }
-            uutinen = this.uutinenRepo.save(uutinen);
-            for (Long kategoria : kategoriat) {
-                this.kategoriaRepo.findById(kategoria).get().addUutinen(uutinen);
-            }
+            Uutinen uutinen = luoUutinen(nimi, ingressi, teksti, kategoriat, kirjoittajat, file);
             return "redirect:/uutinen/" + uutinen.getId();
         }
         return "redirect:/uutinenAdd";
     }
 
-//    @GetMapping("/uutinen/{uutinenId}/kuva")
-//    public String kuvaPage(@PathVariable Long uutinenId, Model model) {
-//        model.addAttribute("uutinenId", uutinenId);
-//        return "";
-//    }
     @GetMapping(path = "/uutinen/{uutinenId}/kuva", produces = "image/jpeg")
     @ResponseBody
     public byte[] getKuva(@PathVariable Long uutinenId) throws SQLException {
@@ -179,6 +140,44 @@ public class UutinenController {
         uutinen.setIngressi(ingressi);
         uutinen.setTeksti(teksti);
         return "redirect:/uutinen/" + uutinen.getId();
+    }
+
+    public Model sivupalkit(Model model) {
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
+        model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));
+        Pageable pageable2 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
+        model.addAttribute("kaikki", uutinenRepo.findAll(pageable2));
+        return model;
+    }
+
+    @Transactional
+    private Uutinen luoUutinen(String nimi, String ingressi, String teksti, Long[] kategoriat, Long[] kirjoittajat, MultipartFile file) throws IOException {
+        Uutinen uutinen = new Uutinen();
+        uutinen.setIngressi(ingressi);
+        ArrayList<Kategoria> kategoriat2 = new ArrayList();
+        for (Long kategoria : kategoriat) {
+            kategoriat2.add(this.kategoriaRepo.getOne(kategoria));
+        }
+        uutinen.setKategoriat(kategoriat2);
+
+        ArrayList<Kirjoittaja> kirjoittajat2 = new ArrayList();
+        for (Long kirjoittaja : kirjoittajat) {
+            kirjoittajat2.add(this.kirjoittajaRepo.getOne(kirjoittaja));
+        }
+        uutinen.setKirjoittajat(kirjoittajat2);
+        uutinen.setTeksti(teksti);
+        uutinen.setNimi(nimi);
+        uutinen.setUutinenDate(LocalDateTime.now());
+        if (file.getContentType().equals("image/jpeg")) {
+
+            uutinen.setKuva(file.getBytes());
+
+        }
+        uutinen = this.uutinenRepo.save(uutinen);
+        for (Long kategoria : kategoriat) {
+            this.kategoriaRepo.findById(kategoria).get().addUutinen(uutinen);
+        }
+        return uutinen;
     }
 
 }
