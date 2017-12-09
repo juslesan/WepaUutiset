@@ -5,6 +5,7 @@
  */
 
 import java.util.Collection;
+import java.util.List;
 import juslesan.wepauutiset.WepaUutisetApplication;
 import juslesan.wepauutiset.domain.Kategoria;
 import juslesan.wepauutiset.repository.UutinenRepository;
@@ -35,45 +36,45 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = WepaUutisetApplication.class)
 public class KategoriaControllerTest {
-
+    
     private MockMvc mockMvc;
-
+    
     @Autowired
     private WebApplicationContext webAppContext;
-
+    
     @Autowired
     private UutinenRepository uutinenRepo;
-
+    
     public KategoriaControllerTest() {
     }
-
+    
     @Before
     public void setUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();
     }
-
+    
     @Test
     public void valmiitKategoriat() throws Exception {
         mockMvc.perform(get("/uutiset/kategoriat")).andExpect(status().isOk());
         MvcResult res = mockMvc.perform(get("/uutiset/kategoriat")).andReturn();
-
+        
         Collection<Kategoria> kategoriat = (Collection) res.getModelAndView().getModel().get("kategoriat");
-        assertEquals(5, kategoriat.size());
-
+        assertEquals(false, kategoriat.isEmpty());
+        
     }
-
+    
     @Test
     public void lisaaKategoria() throws Exception {
-//        MultiValueMap<String, String> params = new MultiValueMap();
-//        params.add(k, v);
         mockMvc.perform(post("/uutiset/kategoriat").param("nimi", "Uusi")).andExpect(status().is3xxRedirection());
+        
         MvcResult res = mockMvc.perform(get("/uutiset/kategoriat")).andReturn();
-        Collection<Kategoria> kategoriat = (Collection) res.getModelAndView().getModel().get("kategoriat");
-        for (Kategoria kategoria : kategoriat) {
-            if (kategoria.getNimi().equals("Uusi")) {
-                Assert.isTrue(true, "true");
-            }
-        }
+        List<Kategoria> kategoriat = (List<Kategoria>) res.getModelAndView().getModel().get("kategoriat");
+//        for (Kategoria kategoria : kategoriat) {
+//            if (kategoria.getNimi().equals("Uusi")) {
+//                Assert.isTrue(true, "true");
+//            }
+//        }
+        assertEquals(true, kategoriat.get(kategoriat.size() - 1).getNimi().equals("Uusi"));
     }
 
     // TODO add test methods here.

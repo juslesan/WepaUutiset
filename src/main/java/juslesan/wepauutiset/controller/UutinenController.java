@@ -134,15 +134,11 @@ public class UutinenController {
         uutinen.setTeksti(teksti);
         uutinen.setNimi(nimi);
         uutinen.setUutinenDate(LocalDateTime.now());
-//        if (file.getContentType().equals("image/jpeg")) {
-        byte[] picInBytes = new byte[(int) file.getSize()];
-        
-        FileInputStream fileInputStream = (FileInputStream) file.getInputStream();
-        fileInputStream.read(picInBytes);
-        fileInputStream.close();
-        uutinen.setKuva(picInBytes);
+        if (file.getContentType().equals("image/jpeg")) {
+       
+        uutinen.setKuva(file.getBytes());
 
-//        }
+        }
 //        if (file.getContentType().equals("image/png")) {
 //            uutinen.setKuva(file.getBytes());
 //        }

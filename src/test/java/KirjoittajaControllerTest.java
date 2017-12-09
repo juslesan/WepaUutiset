@@ -5,6 +5,7 @@
  */
 
 import java.util.Collection;
+import java.util.List;
 import juslesan.wepauutiset.WepaUutisetApplication;
 import juslesan.wepauutiset.domain.Kategoria;
 import juslesan.wepauutiset.domain.Kirjoittaja;
@@ -58,19 +59,18 @@ public class KirjoittajaControllerTest {
         MvcResult res = mockMvc.perform(get("/uutiset/kirjoittajat")).andReturn();
 
         Collection<Kirjoittaja> kirjoittajat = (Collection) res.getModelAndView().getModel().get("kirjoittajat");
-        assertEquals(5, kirjoittajat.size());
+        assertEquals(false, kirjoittajat.isEmpty());
     }
 
     @Test
     public void lisaaKirjoittaja() throws Exception {
         mockMvc.perform(post("/uutiset/kirjoittajat").param("nimi", "Uusi")).andExpect(status().is3xxRedirection());
         MvcResult res = mockMvc.perform(get("/uutiset/kirjoittajat")).andReturn();
-        Collection<Kirjoittaja> kirjoittajat = (Collection) res.getModelAndView().getModel().get("kirjoittajat");
-        for (Kirjoittaja kirjoittaja : kirjoittajat) {
-            if (kirjoittaja.getNimi().equals("Uusi")) {
-                Assert.isTrue(true, "true");
-            }
-        }
+        List<Kirjoittaja> kirjoittajat = (List<Kirjoittaja>) res.getModelAndView().getModel().get("kirjoittajat");
+//        for (Kirjoittaja kirjoittaja : kirjoittajat) {
+//            if (kirjoittaja.getNimi().equals("Uusi")) {
+//                Assert.isTrue(true, "true");
+//            }
+        assertEquals(true, kirjoittajat.get(kirjoittajat.size() - 1).getNimi().equals("Uusi"));
     }
-
 }

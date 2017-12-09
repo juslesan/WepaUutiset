@@ -1,13 +1,18 @@
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.transaction.Transactional;
 import juslesan.wepauutiset.WepaUutisetApplication;
 import juslesan.wepauutiset.domain.Kategoria;
 import juslesan.wepauutiset.domain.Kirjoittaja;
+import juslesan.wepauutiset.domain.Uutinen;
 import juslesan.wepauutiset.repository.KategoriaRepository;
 import juslesan.wepauutiset.repository.KirjoittajaRepository;
 import juslesan.wepauutiset.repository.UutinenRepository;
@@ -21,6 +26,8 @@ import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -73,19 +80,73 @@ public class UutinenControllerTest {
     public void statusOk() throws Exception {
         mockMvc.perform(get("/etusivu"))
                 .andExpect(status().isOk());
+        mockMvc.perform(get("/uutiset")).andExpect(status().isOk());
+        mockMvc.perform(get("/uutiset/luetuimmat")).andExpect(status().isOk());
 
     }
 
-//    @Test
-//    public void lisaaUutinen() throws Exception {
-//        mockMvc.perform(get("/uutinen/add")).andExpect(status().isOk());
-//        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap();
-//        params.add("nimi", (String) "uutinen");
-//        params.add("ingressi", (String) "Ingressi");
-//        params.add("teksti", (String) "teksti");
-//        params.add("kuva", "src/test/java/BibFrog.jpg");
-//        
-//        mockMvc.perform(post("/uutinen/add").params(params)).andExpect(status().is3xxRedirection());
-//    }
+    @Test
+    public void lisaaUutinen() throws Exception {
+        Long id = lisaaUutinenRepoon();
+        mockMvc.perform(get("/uutinen/" + id)).andExpect(status().isOk());
+        this.uutinenRepo.deleteAll();
 
+    }
+
+    @Test
+    public void lisaaMontaUutistaEtusivullaVainViisi() throws IOException, Exception {
+        this.uutinenRepo.deleteAll();
+
+        lisaaUutinenRepoon();
+        lisaaUutinenRepoon();
+        lisaaUutinenRepoon();
+        lisaaUutinenRepoon();
+        lisaaUutinenRepoon();
+        lisaaUutinenRepoon();
+        lisaaUutinenRepoon();
+        mockMvc.perform(get("/etusivu")).andExpect(status().isOk());
+        MvcResult res = mockMvc.perform(get("/etusivu")).andReturn();
+        PageImpl uutiset = (PageImpl) res.getModelAndView().getModel().get("uutiset");
+        assertEquals(5, uutiset.getPageable().getPageSize());
+        this.uutinenRepo.deleteAll();
+    }
+
+    @Test
+    public void useanLisaamisenJalkeenListaus() throws IOException, Exception {
+        this.uutinenRepo.deleteAll();
+        lisaaUutinenRepoon();
+        lisaaUutinenRepoon();
+        lisaaUutinenRepoon();
+        lisaaUutinenRepoon();
+        lisaaUutinenRepoon();
+        lisaaUutinenRepoon();
+        lisaaUutinenRepoon();
+        lisaaUutinenRepoon();
+
+        mockMvc.perform(get("/uutiset")).andExpect(status().isOk());
+        MvcResult res = mockMvc.perform(get("/uutiset")).andReturn();
+        PageImpl uutiset = (PageImpl) res.getModelAndView().getModel().get("uutiset");
+        assertEquals(8, uutiset.getTotalElements());
+        this.uutinenRepo.deleteAll();
+    }
+
+    @Transactional
+    public Long lisaaUutinenRepoon() throws FileNotFoundException, IOException {
+        Uutinen uutinen = new Uutinen();
+        uutinen.setNimi("nimi");
+        uutinen.setIngressi("ingressi");
+        uutinen.setTeksti("teksti");
+        uutinen.setKategoriat(new ArrayList());
+        uutinen.setKirjoittajat(new ArrayList());
+        File file = new File("src/test/java/BibFrog.jpg");
+        byte[] picInBytes = new byte[(int) file.length()];
+        FileInputStream stream = new FileInputStream(file);
+        stream.read(picInBytes);
+        stream.close();
+        uutinen.setKuva(picInBytes);
+        uutinen.addKategoria(this.kategoriaRepo.save(new Kategoria()));
+        uutinen.addKirjoittaja(this.kirjoittajaRepo.save(new Kirjoittaja()));
+        return this.uutinenRepo.save(uutinen).getId();
+
+    }
 }
