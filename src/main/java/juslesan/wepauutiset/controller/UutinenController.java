@@ -148,9 +148,9 @@ public class UutinenController {
     // 
     // Sivuston kaikilla sivuilla näkyvien palkkien lisääminen modeliin
     public Model sivupalkit(Model model) {
-        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
+        Pageable pageable = PageRequest.of(0, 200, Sort.Direction.DESC, "luettu");
         model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));
-        Pageable pageable2 = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "uutinenDate");
+        Pageable pageable2 = PageRequest.of(0, 200, Sort.Direction.DESC, "uutinenDate");
         model.addAttribute("kaikki", uutinenRepo.findAll(pageable2));
         return model;
     }
