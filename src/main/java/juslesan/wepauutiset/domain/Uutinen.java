@@ -41,7 +41,7 @@ public class Uutinen extends AbstractPersistable<Long> {
     private String ingressi;
 
     @Lob
-    @Column(name="kuva", columnDefinition = "BLOB")
+    @Column(name="kuva", columnDefinition = "bytea")
     private byte[] kuva;
     private LocalDateTime uutinenDate;
     @ManyToMany
