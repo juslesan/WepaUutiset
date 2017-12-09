@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,12 +11,14 @@ import java.util.List;
 import java.util.Map;
 import javax.transaction.Transactional;
 import juslesan.wepauutiset.WepaUutisetApplication;
+import juslesan.wepauutiset.controller.UutinenController;
 import juslesan.wepauutiset.domain.Kategoria;
 import juslesan.wepauutiset.domain.Kirjoittaja;
 import juslesan.wepauutiset.domain.Uutinen;
 import juslesan.wepauutiset.repository.KategoriaRepository;
 import juslesan.wepauutiset.repository.KirjoittajaRepository;
 import juslesan.wepauutiset.repository.UutinenRepository;
+import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.util.MultiMap;
 import org.hibernate.collection.internal.PersistentBag;
 import org.junit.After;
@@ -29,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -40,6 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -69,6 +74,9 @@ public class UutinenControllerTest {
     @Autowired
     private KirjoittajaRepository kirjoittajaRepo;
 
+    @Autowired
+    private UutinenController uutisController;
+
     public UutinenControllerTest() {
 
     }
@@ -90,6 +98,7 @@ public class UutinenControllerTest {
     @Test
     public void lisaaUutinen() throws Exception {
         Long id = lisaaUutinenRepoon();
+        mockMvc.perform(get("/uutinen/add")).andExpect(status().isOk());
         mockMvc.perform(get("/uutinen/" + id)).andExpect(status().isOk());
         mockMvc.perform(get("/uutinen/" + id + "/kuva")).andExpect(status().isOk());
         this.uutinenRepo.deleteAll();
@@ -256,6 +265,48 @@ public class UutinenControllerTest {
         res = mockMvc.perform(get("/uutiset/kategoriat/" + id2)).andReturn();
         uutiset = (PersistentBag) res.getModelAndView().getModel().get("uutiset");
         assertEquals(true, uutiset.empty());
+    }
+
+    @Test
+    public void uutinenControllerLuonti() throws IOException {
+        Long[] kategoriat = new Long[1];
+        Kategoria kategoria = this.kategoriaRepo.save(new Kategoria());
+
+        kategoriat[0] = kategoria.getId();
+        Long[] kirjoittajat = new Long[1];
+
+        Kirjoittaja kirjoittaja = this.kirjoittajaRepo.save(new Kirjoittaja());
+        kirjoittajat[0] = kirjoittaja.getId();
+        File f = new File("src/test/java/BibFrog.jpg");
+        FileInputStream input = new FileInputStream(f);
+        MultipartFile file = new MockMultipartFile("file",
+                f.getName(), "text/plain", IOUtils.toByteArray(input));
+        Uutinen uutinen = this.uutisController.luoUutinen("nimi", "ingressi", "teksti", kategoriat, kirjoittajat, file);
+        assertEquals(true, uutinen.getNimi().equals("nimi"));
+
+        uutinenRepo.deleteAll();
+    }
+
+    @Test
+    public void luoUutinen() throws IOException, SQLException {
+        this.uutinenRepo.deleteAll();
+        Long[] kategoriat = new Long[1];
+        Kategoria kategoria = this.kategoriaRepo.save(new Kategoria());
+
+        kategoriat[0] = kategoria.getId();
+        Long[] kirjoittajat = new Long[1];
+
+        Kirjoittaja kirjoittaja = this.kirjoittajaRepo.save(new Kirjoittaja());
+        kirjoittajat[0] = kirjoittaja.getId();
+        File f = new File("src/test/java/BibFrog.jpg");
+        FileInputStream input = new FileInputStream(f);
+        MultipartFile file = new MockMultipartFile("file",
+                f.getName(), "text/plain", IOUtils.toByteArray(input));
+        this.uutisController.addUutinen("nimi", "ingressi", "teksti", kategoriat, kirjoittajat, file);
+        assertEquals(false, uutinenRepo.findAll().isEmpty());
+        this.uutinenRepo.deleteAll();
+        this.uutisController.addUutinen("", "ingressi", "teksti", kategoriat, kirjoittajat, file);
+        assertEquals(true, uutinenRepo.findAll().isEmpty());
     }
 
     @Transactional

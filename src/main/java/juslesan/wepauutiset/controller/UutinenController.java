@@ -145,10 +145,7 @@ public class UutinenController {
 //        uutinen.setTeksti(teksti);
 //        return "redirect:/uutinen/" + uutinen.getId();
 //    }
-
     // 
-    
-    
     // Sivuston kaikilla sivuilla näkyvien palkkien lisääminen modeliin
     public Model sivupalkit(Model model) {
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
@@ -160,7 +157,7 @@ public class UutinenController {
 
     // Uutisen luominen ja lisääminen repositoryyn
     @Transactional
-    private Uutinen luoUutinen(String nimi, String ingressi, String teksti, Long[] kategoriat, Long[] kirjoittajat, MultipartFile file) throws IOException {
+    public Uutinen luoUutinen(String nimi, String ingressi, String teksti, Long[] kategoriat, Long[] kirjoittajat, MultipartFile file) throws IOException {
         Uutinen uutinen = new Uutinen();
         uutinen.setIngressi(ingressi);
         ArrayList<Kategoria> kategoriat2 = new ArrayList();
