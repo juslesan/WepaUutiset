@@ -30,6 +30,7 @@ public class KategoriaController {
     @Autowired
     private KategoriaRepository kategoriaRepo;
 
+    // Luo peruskategoriat
     @PostConstruct
     public void init() {
         if (kategoriaRepo.findAll().isEmpty()) {
@@ -41,6 +42,7 @@ public class KategoriaController {
         }
     }
 
+    // get pyyntö kategorioiden listaukseen
     @GetMapping("/uutiset/kategoriat")
     public String Kategoriat(Model model) {
         model = sivupalkit(model);
@@ -48,6 +50,7 @@ public class KategoriaController {
         return "kategoria";
     }
 
+    // post pyyntö uuden kategorian luontiin
     @PostMapping("/uutiset/kategoriat")
     public String addKategoria(@RequestParam String nimi) {
         if (!nimi.isEmpty()) {
@@ -60,6 +63,7 @@ public class KategoriaController {
 
     }
 
+    // Sivuston kaikilla sivuilla näkyvien listauspalkkien lisääminen modeliin
     public Model sivupalkit(Model model) {
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
         model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));

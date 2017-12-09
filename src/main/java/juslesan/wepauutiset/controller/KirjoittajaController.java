@@ -32,6 +32,7 @@ public class KirjoittajaController {
     @Autowired
     private KirjoittajaRepository kirjoittajaRepo;
 
+    // Luo 5 kirjoittajaa
     @PostConstruct
     public void init() {
         if (kirjoittajaRepo.findAll().isEmpty()) {
@@ -44,6 +45,7 @@ public class KirjoittajaController {
         }
     }
 
+    // get pyyntö kirjoittajien listaukseen
     @GetMapping("/uutiset/kirjoittajat")
     public String Kirjoittajat(Model model) {
         model = sivupalkit(model);
@@ -51,6 +53,7 @@ public class KirjoittajaController {
         return "kirjoittaja";
     }
 
+    // post pyyntö kirjoittajan luontin
     @PostMapping("/uutiset/kirjoittajat")
     public String addKirjoittaja(@RequestParam String nimi) {
         if (!nimi.isEmpty()) {
@@ -62,7 +65,8 @@ public class KirjoittajaController {
         return "redirect:/uutiset/kirjoittajat";
 
     }
-
+    
+    // Sivuston kaikilla sivuilla näkyvien listauspalkkien lisääminen modeliin
     public Model sivupalkit(Model model) {
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "luettu");
         model.addAttribute("luetuimmat", uutinenRepo.findAll(pageable));

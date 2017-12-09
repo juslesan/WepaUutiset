@@ -40,7 +40,7 @@ public class Uutinen extends AbstractPersistable<Long> {
     private String teksti;
     private String ingressi;
 
-//    @Lob
+    // Annotaatio mahdollistaa Herokun Postgreen tallettamisen
     @Column(name="kuva", columnDefinition = "bytea")
     private byte[] kuva;
     private LocalDateTime uutinenDate;
@@ -49,6 +49,7 @@ public class Uutinen extends AbstractPersistable<Long> {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Kategoria> kategoriat;
 
+    
     public void luettuAdd() {
         luettu++;
     }
@@ -65,22 +66,4 @@ public class Uutinen extends AbstractPersistable<Long> {
         }
     }
 
-//    public void setKuva(byte[] kuva) {
-//        try {
-//            this.kuva.setBytes(0, kuva);
-//        } catch (SQLException e) {
-//            System.out.println(e);
-//
-//        }
-//    }
-//
-//    public byte[] getKuva() {
-//        try {
-//            return this.kuva.getBytes(0, Integer.MAX_VALUE);
-//        } catch (SQLException e) {
-//            System.out.println(e);
-//
-//        }
-//        return null;
-//    }
 }
