@@ -6,7 +6,9 @@
 package juslesan.wepauutiset.domain;
 
 import java.sql.Blob;
+import static java.sql.JDBCType.BLOB;
 import java.sql.SQLException;
+import static java.sql.Types.BLOB;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Basic;
@@ -39,6 +41,7 @@ public class Uutinen extends AbstractPersistable<Long> {
     private String ingressi;
 
     @Lob
+    @Column(name="kuva")
     private byte[] kuva;
     private LocalDateTime uutinenDate;
     @ManyToMany
