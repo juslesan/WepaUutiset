@@ -4,4 +4,4 @@ Myös uutisten lisäyssivu löytyy navigointipalkista. Sivulle voi lisätä uusi
 eivät näy suoraan navigointipalkista vaan kategorioiden listaussivulta.
 
 Sivustolle lisättäessä uutisia tulee täyttää kaikki kentät. Sivustolle voi lisätä vain jpg-muotoisia kuvia. Editoidessa voi muokata 
-tekstejä HUOM! ALKUPERÄINEN TEKSTI TULEE VAIN PLACEHOLDERIKSI MUOKKAUSSIVULLA.
+tekstejä HUOM! ALKUPERÄINEN ARTIKKELIN TEKSTI TULEE VAIN PLACEHOLDERIKSI MUOKKAUSSIVULLA.
