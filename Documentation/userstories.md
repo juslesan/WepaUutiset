@@ -1,4 +1,4 @@
-Uutisen luonti
+* Uutisen luonti
 
 
 Käyttäjä avaa etusivun ja painaa navigointipalkista "Lisää uutinen" linkkiä
@@ -9,7 +9,7 @@ Käyttäjä ohjataan uuden uutisen omalle sivulle.
 
 
 
-Uutisen muokkaus
+* Uutisen muokkaus
 
 
 Käyttjä haluaa muokata haluamaansas uutiseta.
@@ -20,7 +20,7 @@ Käyttäjä täyttää tekstikenttiin haluamansa muutokset.
 
 
 
-Uutisen lisääminen ja poistaminen
+* Uutisen lisääminen ja poistaminen
 
 
 Käyttäjä avaa Lisää Uutinen linkin
@@ -33,7 +33,7 @@ Käyttäjä painaa "Poista Uutinen" linkkiä
 
 
 
-Uuden kategorian lisäys
+* Uuden kategorian lisäys
 
 
 Avataan navigointipalkista kategoriat linkki
@@ -42,7 +42,7 @@ Kirjoitetaan uuden kategorian nimi tekstikenttän ja painetaan "Submit Query"
 
 
 
-Uuden kirjoittajan lisäys
+* Uuden kirjoittajan lisäys
 
 
 Avataan navigointipalkista kirjoittajat linkki
